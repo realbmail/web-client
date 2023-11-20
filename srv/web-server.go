@@ -39,12 +39,16 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 	// Your login handler logic
 }
+func registerEmailHandler(w http.ResponseWriter, r *http.Request) {
+	// 读取registerEmail.html文件内容并发送到浏览器
+	templates.ExecuteTemplate(w, "register.html", nil)
+}
 func newSrv() *WebSrv {
 	var ws = &WebSrv{}
 	templates = template.Must(template.ParseGlob("web/templates/*.html"))
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/login", loginHandler)
-
+	http.HandleFunc("/registerEmail", registerEmailHandler)
 	fs := http.FileServer(http.Dir("web/assets"))
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 	return ws

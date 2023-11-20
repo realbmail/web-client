@@ -3,8 +3,72 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>{{.Title}}</title>
-    <link rel="stylesheet" href="assets/index.css">
+    <title>BMail</title>
+    <link rel="icon" href="assets/logo.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-form {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc; /* 添加默认边框颜色 */
+        }
+
+        #password:focus {
+            border-color: #ED3535; /* 设置获取焦点时的边框颜色为 #ED3535 */
+        }
+
+        #email::selection,
+        #password::selection {
+            background-color: #ED3535; /* 设置选中状态颜色为#ED3535 */
+            color: white;
+        }
+
+        #loginButton {
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #registerEmailBtn {
+            background-color: #808080;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .button-group {
+            margin-top: 10px;
+        }
+
+        .separator {
+            margin: 0 10px;
+        }
+    </style>
 </head>
 
 <body>
@@ -13,10 +77,14 @@
     <form id="loginForm">
         <input type="text" id="email" placeholder="Email Address">
         <input type="password" id="password" placeholder="Password">
-        <label id="blockchainAddress">Blockchain Address Info</label> <!-- 将 blockchainAddress 元素移至 password 后 -->
-        <button type="submit">Login</button>
+        <button type="submit" id="loginButton">Login</button>
+        <label id="blockchainAddress">Blockchain Address Info</label>
     </form>
-    <button id="registerEmailBtn">Register Email</button>
+    <div class="button-group">
+        <button id="registerEmailBtn">Register Email</button>
+        <span class="separator">|</span>
+        <button id="importAccountBtn">Import Account</button>
+    </div>
 </div>
 
 <script>

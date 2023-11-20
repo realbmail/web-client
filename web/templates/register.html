@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register Email</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #2983bb;
+        }
+        .container {
+            text-align: center;
+            padding: 40px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            width: 300px;
+        }
+        input[type="email"],
+        input[type="password"] {
+            width: calc(100% - 20px);
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        #createButton {
+            background-color: #ea8958;
+        }
+        #importButton {
+            background-color: #ffcc99; /* 浅一些的颜色 */
+        }
+        img {
+            margin-bottom: 20px; /* 调整logo与下面元素的距离 */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Logo图片 -->
+    <img src="assets/logo.png" alt="Logo">
+
+    <!-- 邮箱输入框 -->
+    <input type="email" id="emailInput" placeholder="Enter your email address">
+
+    <!-- 两个密码输入框 -->
+    <input type="password" id="passwordInput1" placeholder="Enter password">
+    <input type="password" id="passwordInput2" placeholder="Confirm password">
+
+    <!-- 两个按钮 -->
+    <button id="createButton">Create</button>
+    <button id="importButton">Import</button>
+</div>
+</body>
+</html>
