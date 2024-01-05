@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            caret-color: #F28552;
+        }
+
+        nav {
+            height: 72px;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            box-sizing: border-box;
+            border-bottom: 1px solid #EEF0F1;
+        }
+
+        nav img {
+            height: 40px;
+        }
+
+        .compose-button {
+            width: 200px;
+            height: 44px;
+            background: linear-gradient(to right, #F58E4B, #FBA23A);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 20px; /* 调整按钮距离上方的间距 */
+        }
+
+        nav a {
+            color: #04062E;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 342px; /* 减小侧边栏的宽度 */
+            background-color: #ffffff;
+            color: #04062E;
+            padding: 32px 20px 32px 50px; /* 调整 padding */
+            box-sizing: border-box;
+            height: 94vh;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #EEF0F1;
+        }
+
+        .sidebar ul {
+            padding: 0;
+            list-style-type: none;
+        }
+
+        .sidebar li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        li img {
+            width: 28px;
+            height: 28px;
+            margin-right: 4px; /* 调整图标和文本之间的间距 */
+        }
+
+        .data-display {
+            margin-left: auto; /* 将数据显示元素推送到 <li> 的最右侧 */
+            background-color: #F58E4B;
+            color: #ffffff;
+            padding: 4px 6px;
+            border-radius: 12px;
+            font-size: 14px;
+        }
+
+        .sidebar a {
+            font-size: 16px;
+            text-decoration: none;
+            color: #04062E;
+        }
+
+        .user-profile {
+            margin-top: auto;
+            padding-bottom: 20px;
+            text-align: left;
+        }
+
+        .user-profile img {
+            width: 36px;
+            height: 36px;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .user-profile p {
+            display: block;
+            vertical-align: middle;
+            margin-top: 6px;
+            font-size: 12px;
+            color: #04062E;
+            font-weight: lighter;
+            word-wrap: break-word;
+            background-color: rgba(242, 133, 82, 0.1); /* 背景颜色 #F28552 的透明度为 10% */
+            border-radius: 12px; /* 圆角为 12px */
+            padding: 8px; /* 添加一些内边距，使效果更好看 */
+        }
+
+        .user-profile strong {
+            margin: 0;
+            font-size: 16px;
+            font-weight: bold;
+            color: #04062E;
+        }
+
+
+        .inbox-container {
+            flex: 1;
+            width: 80%;
+            background-color: white;
+            text-align: left;
+        }
+
+        .email {
+            border-bottom: 1px solid #EEF0F1;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .email:hover {
+            background-color: #F3F6F7;
+        }
+
+        .timestamp {
+            margin-left: auto;
+            color: #F28552;
+            font-size: 12px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .email img {
+            width: 28px;
+            height: 28px;
+            margin-right: 10px;
+        }
+
+        .email strong {
+            font-size: 16px;
+            color: #04062E;
+            margin-right: 72px;
+            margin-left: 8px;
+        }
+
+        .email p {
+            color: #383737;
+            font-size: 14px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            max-width: 20em; /* 设置最大宽度，相当于10个字符 */
+            margin: 0;
+        }
+
+        .action-buttons {
+            height: 52px;
+            background-color: #F9FCFD;
+            display: flex;
+            align-items: center;
+        }
+
+        .action-buttons button {
+            height: 32px;
+            width: 62px;
+            background-color: #ffffff;
+            color: #04062E;
+            border-radius: 12px;
+            border: 1px solid #EEF0F1;
+            cursor: pointer;
+            margin-right: 16px;
+
+        }
+
+        .action-buttons label {
+            display: flex;
+            align-items: center;
+            margin-left: 24px;
+        }
+
+
+        input[type="checkbox"] {
+            appearance: none; /* 隐藏默认的浏览器样式 */
+            margin: 0;
+            width: 14px; /* 设置宽度 */
+            height: 14px; /* 设置高度 */
+            border: 1px solid #CBCFD0; /* 边框颜色 */
+            border-radius: 50%; /* 圆角100% */
+            background-color: #F9FCFD; /* 背景颜色 */
+            cursor: pointer;
+            position: relative;
+        }
+
+        /* 复选框的选中状态样式 */
+        input[type="checkbox"]:checked::before {
+            content: "\2713"; /* Unicode 编码，表示选中状态的勾号 */
+            margin: 0;
+            font-size: 12px;
+            color: #F28552; /* 勾号颜色 */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(242, 133, 82, 0.2); /* 背景颜色修改为 #F28552 的透明度为 20% */
+            border: 1px solid rgba(242, 133, 82, 0.3); /* 边框颜色修改为 #F28552 的透明度为 30% */
+            border-radius: 50%;
+        }
+
+        .email.read {
+            background-color: #ffffff; /* 已读邮件的背景色 */
+            font-weight: normal; /* 如果已读邮件需要与未读邮件有不同的字体样式，您可以调整这里 */
+        }
+        .email.read strong {
+            font-weight: normal;
+            color: #808080;
+            margin-right: 72px;
+            margin-left: 8px;
+        }
+
+        .email.read .timestamp {
+            margin-left: auto;
+            color: #808080;
+            font-size: 12px;
+            font-weight: normal;
+            white-space: nowrap;
+        }
+
+        .email.read p {
+            color: #808080;
+            font-size: 14px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            max-width: 20em; /* 设置最大宽度，相当于10个字符 */
+            margin: 0;
+        }
+
+        .email.read:hover {
+            background-color: #F3F6F7;
+        }
+
+        .compose-container h2 {
+            background-color: rgba(242, 133, 82, 0.2);
+            color: #F28552;
+            font-size: 16px;
+            border-radius: 16px;
+            padding: 5px 12px;
+        }
+
+        .compose-container button,
+        .compose-container h2 {
+            display: inline-block;
+            margin-top: 12px;
+            margin-bottom: 8px; /* 调整按钮和标题之间的垂直间距 */
+        }
+
+        .show-compose .inbox-container {
+            display: none; /* 隐藏邮件列表页面 */
+        }
+
+        .show-compose {
+            display: block; /* 显示写信页面 */
+        }
+
+        .compose-container button {
+            margin-top: 20px;
+            margin-right: 6px;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            justify-content: flex-start; /* 左对齐 */
+        }
+        /* 隐藏新邮件容器的样式 */
+        .hidden {
+            display: none;
+        }
+
+        .compose-container textarea {
+            width: 97%;
+            height: 400px;
+            margin-top: 8px;
+            padding: 16px;
+        }
+
+        .compose-toolbar img{
+            margin-right:12px;
+            margin-left: 8px;
+        }
+
+        .compose-toolbar img:nth-child(2),
+        .compose-toolbar img:nth-child(4),
+        .compose-toolbar img:nth-child(6) {
+            margin-right: 8px; /* 调整这里的间距 */
+            content: "";
+            display: inline-block;
+            border-right: 2px solid #D9D8D8; /* 图标之间的分割线样式 */
+            margin-left: 8px; /* 调整分割线与图标之间的间距 */
+        }
+
+        .email-details {
+            padding: 16px 24px;
+        }
+
+        .email-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: #383737;
+        }
+
+        #email-username {
+            font-weight: bold;
+            margin-right: 6px;
+        }
+
+        #email-recipient {
+            font-size: 14px;
+            color: #808080;
+            margin: 0;
+        }
+
+        .email-info div {
+            display: flex;
+            align-items: center;
+        }
+
+        #email-username,
+        #email-sender,
+        #email-date {
+            margin-top: 0;
+            margin-bottom: 6px;
+        }
+
+        .email-details h2{
+            display: block;
+            font-size: 25px;
+            margin-bottom: 8px;
+            margin-top: 0;
+            font-weight: bold;
+        }
+
+        #email-content {
+            color: #383737;
+            font-size: 14px;
+            line-height: 22px;
+            margin: 16px 0; /* 可以消除默认的外边距，确保行高和段落之间的间距准确 */
+        }
+
+        .email-details button {
+            background-color: transparent;
+            border: 1px solid #D9D8D8;
+            color: #383737;
+            border-radius: 16px;
+            padding: 8px 16px;
+            margin-right: 10px; /* 可以根据需要调整按钮之间的间距 */
+            cursor: pointer;
+        }
+
+        .email-details button img {
+            margin-right: 4px;
+        }
+
+        .email-details button:hover {
+            background-color: #D9D8D8;
+            color: #383737;
+        }
+
+
+    </style>
+</head>
+
+<body>
+<nav>
+    <img src="logo.png" alt="Logo">
+    <div>
+        <a href="#logout">Logout</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="sidebar">
+        <button class="compose-button">写信</button>
+        <ul>
+            <li style="background-color: rgba(242, 122, 82, 0.1); height: 44px; border-radius: 14px; padding:0 8px;">
+                <img src="inbox-icon.png" alt=""> <!-- 请替换 "inbox-icon.png" 为您的图标文件 -->
+                <a href="#" >收件箱</a>
+                <span class="data-display">100</span> <!-- 这里添加一个显示数据的元素 -->
+            </li>
+            <li>
+                <img src="sent-icon.png"> <!-- 请替换 "sent-icon.png" 为您的图标文件 -->
+                <a href="#sent">已发送</a>
+            </li>
+            <li>
+                <img src="drafts-icon.png"> <!-- 请替换 "drafts-icon.png" 为您的图标文件 -->
+                <a href="#drafts">草稿箱</a>
+            </li>
+            <li>
+                <img src="trash-icon.png"alt=""> <!-- 请替换 "trash-icon.png" 为您的图标文件 -->
+                <a href="#trash">垃圾箱</a>
+            </li>
+        </ul>
+        <div class="user-profile">
+            <img src="user-avatar.png" alt="">
+            <strong>用户名</strong>
+            <p>BMBwMAspU6dF6b3KjVc5HvVfsLnHuxHkoHZDnKPpwMmeHr</p>
+        </div>
+    </div>
+
+    <div class="inbox-container">
+        <div class="action-buttons">
+            <label for="select-all">
+                <button>
+                    <input type="checkbox" id="select-all" alt="全选">
+                    全选
+                </button>
+            </label>
+            <button onclick="refreshEmails()">刷新</button>
+            <button onclick="deleteSelected()">删除</button>
+        </div>
+        <div class="email-item" onclick="showEmailDetails()">
+            <!-- 邮件列表项的内容 -->
+            <div class="email">
+                <label>
+                    <input type="checkbox">
+                </label>
+                <strong>john.doe@example.com</strong>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vehicula lectus non arcu tempus...</p>
+                <span class="timestamp">昨日</span>
+            </div>
+            <div class="email">
+                <label>
+                    <input type="checkbox">
+                </label>
+                <strong>jane.smith@example.com</strong>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vehicula lectus non arcu tempus...</p>
+                <span class="timestamp">10月1日</span>
+            </div>
+        </div>
+        <!-- 邮件详情 -->
+        <div class="email-details hidden">
+            <h2 id="email-title">无主题</h2>
+            <div class="email-info">
+                <div>
+                    <p id="email-username">豆</p>
+                    <p id="email-sender">< udou@gmail.com ></p>
+                </div>
+                <p id="email-date">11月27日</p>
+            </div>
+            <p id="email-recipient">发送至 918805419@qq.com</p>
+            <p id="email-content">温馨提示：自2023/12/02起，你的 50 GB 储存空间方案将以每月 ¥6.00 的价格自动续期，直到你取消为止。你必须在每个续期日期前至少一天降级订阅，以避免收费。你可以使用 iPhone、iPad、Mac 或 PC 进行降级。*
+            </p>
+            <button onclick="replyToEmail()"><img src="email-reply.png" alt="">回复</button>
+            <button onclick="forwardEmail()"><img src="email-forward.png" alt="">转发</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function refreshEmails() {
+        // Implement refresh logic here
+        alert("Refreshing emails...");
+    }
+
+    function deleteSelected() {
+        // Implement delete logic here
+        alert("Deleting selected emails...");
+    }
+    // 获取邮件元素
+    document.addEventListener('DOMContentLoaded', function() {
+        var emailContainer = document.querySelector('.inbox-container');
+
+        emailContainer.addEventListener('click', function(event) {
+            var target = event.target;
+            if (target.classList.contains('email')) {
+                target.classList.add('read');
+            }
+        });
+    });
+
+    // 获取 "写信" 按钮元素
+    var composeButton = document.querySelector('.compose-button');
+
+    // 获取模态框元素
+    var modal = document.getElementById('myModal');
+
+    // 获取关闭按钮元素（如果需要）
+    var closeBtn = document.getElementsByClassName('close')[0];
+
+    // 添加点击事件监听器
+    composeButton.addEventListener('click', function() {
+        // 显示模态框
+        modal.style.display = 'block';
+    });
+
+    // 添加关闭按钮点击事件监听器（如果需要）
+    closeBtn.addEventListener('click', function() {
+        // 隐藏模态框
+        modal.style.display = 'none';
+    });
+
+    // 添加点击模态框外部区域关闭模态框的逻辑（如果需要）
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    //邮件列表显示邮件详情
+    function showEmailDetails() {
+        // 获取邮件详情的 div 元素
+        var emailDetails = document.querySelector('.email-details');
+
+        // 移除 hidden 类，显示邮件详情
+        emailDetails.classList.remove('hidden');
+    }
+    // 获取邮件列表项的包裹元素
+    var emailItemContainer = document.querySelector('.email-item');
+
+    // 添加点击事件监听器
+    emailItemContainer.addEventListener('click', function() {
+        // 调用显示邮件详情的函数
+        showEmailDetails();
+    });
+
+
+</script>
+</body>
+
+</html>
